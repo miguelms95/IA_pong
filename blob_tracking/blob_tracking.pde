@@ -1,58 +1,43 @@
 import processing.video.*;
 
-
-
 Capture video;
 
-
-
 color trackColor; 
-
 float threshold = 25;
-
 float distThreshold = 50;
-
 
 ArrayList<Blob> blobs = new ArrayList<Blob>();
 
 int marcadorIzq;
 int marcadorDer;
-
 boolean pause;
 
-Pelota p;
+Pelota pelota;
 
 void setup() {
 
   size(640, 360);
-
+  
   String[] cameras = Capture.list();
-
   printArray(cameras);
 
   video = new Capture(this, 640, 360);
-
   video.start();
+  
+  // meter opacidad fondo.
 
   trackColor = color(255, 0, 0);
 
   marcadorIzq = 0;
   marcadorDer = 0;
   
-  pause = false;
-  
-  p = new Pelota(30,100);
+  pause = false;  
+  pelota = new Pelota(100,100);
 }
-
-
 
 void captureEvent(Capture video) {
-
   video.read();
-
 }
-
-
 
 void keyPressed() {
 
@@ -120,8 +105,8 @@ void draw() {
     }
   }
 
-  p.pintar();
-  p.aplicarMovimiento();
+  pelota.pintar();
+  pelota.aplicarMovimiento();
 
   imprimeMarcadores();
 }
