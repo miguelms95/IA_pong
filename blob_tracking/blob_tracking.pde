@@ -16,7 +16,7 @@ float distThreshold = 50;
 
 ArrayList<Blob> blobs = new ArrayList<Blob>();
 
-
+Pelota pelota;
 
 void setup() {
 
@@ -31,15 +31,15 @@ void setup() {
   video.start();
 
   trackColor = color(255, 0, 0);
-
+  
+  pelota = new Pelota(100,100);
+  
 }
 
 
 
 void captureEvent(Capture video) {
-
   video.read();
-
 }
 
 
@@ -67,6 +67,8 @@ void draw() {
   video.loadPixels();
   image(video, 0, 0);
   blobs.clear();
+  
+  pelota.pintar();
 
   // Begin loop to walk through every pixel
   for (int x = 0; x < video.width; x++ ) {
