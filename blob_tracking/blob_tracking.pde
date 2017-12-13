@@ -16,12 +16,12 @@ Pelota pelota;
 
 void setup() {
 
-  size(640, 360);
+  size(1280, 720);
   
   String[] cameras = Capture.list();
   printArray(cameras);
 
-  video = new Capture(this, 640, 360);
+  video = new Capture(this, 1280, 720);
   video.start();
   
   // meter opacidad fondo.
