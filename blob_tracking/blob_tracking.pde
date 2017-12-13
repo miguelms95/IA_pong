@@ -20,7 +20,7 @@ int marcadorDer;
 
 boolean pause;
 
-
+Pelota p;
 
 void setup() {
 
@@ -40,6 +40,8 @@ void setup() {
   marcadorDer = 0;
   
   pause = false;
+  
+  p = new Pelota(30,100);
 }
 
 
@@ -118,6 +120,13 @@ void draw() {
     }
   }
 
+  p.pintar();
+  p.aplicarMovimiento();
+
+  imprimeMarcadores();
+}
+
+void imprimeMarcadores(){
   textAlign(RIGHT);
   fill(0);
   textSize(16);
