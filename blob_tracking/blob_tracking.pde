@@ -36,13 +36,9 @@ void setup() {
   
 }
 
-
-
 void captureEvent(Capture video) {
   video.read();
 }
-
-
 
 void keyPressed() {
 
@@ -116,6 +112,8 @@ void draw() {
   fill(0);
   text("distance threshold: " + distThreshold, width-10, 25);
   text("color threshold: " + threshold, width-10, 50);
+  
+  pelota.aplicarMovimiento();
 }
 
 // Custom distance functions w/ no square root for optimization
