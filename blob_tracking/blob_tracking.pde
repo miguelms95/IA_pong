@@ -13,25 +13,33 @@ float threshold = 25;
 float distThreshold = 50;
 
 
-
 ArrayList<Blob> blobs = new ArrayList<Blob>();
+
+int marcadorIzq;
+int marcadorDer;
+
+boolean pause;
 
 
 
 void setup() {
 
-  size(1280, 720);
+  size(640, 360);
 
   String[] cameras = Capture.list();
 
   printArray(cameras);
 
-  video = new Capture(this, 1280, 720);
+  video = new Capture(this, 640, 360);
 
   video.start();
 
   trackColor = color(255, 0, 0);
 
+  marcadorIzq = 0;
+  marcadorDer = 0;
+  
+  pause = false;
 }
 
 
@@ -112,8 +120,25 @@ void draw() {
 
   textAlign(RIGHT);
   fill(0);
+  textSize(16);
   text("distance threshold: " + distThreshold, width-10, 25);
   text("color threshold: " + threshold, width-10, 50);
+  
+  //Linea central
+  fill(0,0,0,180);
+  rect(width/2-5, 0, 10,height);
+  
+  //Marcadores
+  textAlign(CENTER);
+  textSize(width/15);
+  text(marcadorIzq,width/2-width/15, height/10);
+  text(marcadorDer,width/2+width/15, height/10);
+  
+  //Simbolo de pausa
+  if(pause){
+    rect(25, 25, width/40, height/7);
+    rect(45+width/40, 25, width/40, height/7);
+  }
 }
 
 // Custom distance functions w/ no square root for optimization
