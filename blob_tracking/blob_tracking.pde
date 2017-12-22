@@ -32,7 +32,8 @@ void setup() {
   video.start();
   
   // meter opacidad fondo.
-  trackColor = color(255, 0, 0);
+  
+  //trackColor = color(255, 0, 0);
   marcadorIzq = 0;
   marcadorDer = 0;
   
@@ -41,13 +42,10 @@ void setup() {
 }
 
 void captureEvent(Capture video) {
-
   video.read();
-  
 }
 
 void keyPressed() {
-
   if (key == 'a') { // aumenta distancia del umbral 
     distThreshold += 5;
   } else if (key == 'z') { // disminuye distancia del umbral 
