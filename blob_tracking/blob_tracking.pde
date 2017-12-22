@@ -2,11 +2,25 @@ import processing.video.*;
 
 Capture video;
 
+
 color trackColor; 
+
 float threshold = 25;
+
 float distThreshold = 50;
 
+// No hace falta
 ArrayList<Blob> blobs = new ArrayList<Blob>();
+
+// Añadido Angela y Lucia
+color color1 = 0;
+Blob blob1 = null;
+boolean asignada1 = false;
+
+// Añadido Angela y Lucia
+color color2 = 0;
+Blob blob2 = null;
+boolean asignada2 = false;
 
 int marcadorIzq;
 int marcadorDer;
@@ -19,9 +33,11 @@ void setup() {
   size(1280, 720);
   
   String[] cameras = Capture.list();
+  
   printArray(cameras);
 
   video = new Capture(this, 1280, 720);
+  
   video.start();
   
   // meter opacidad fondo.
@@ -36,7 +52,9 @@ void setup() {
 }
 
 void captureEvent(Capture video) {
+
   video.read();
+  
 }
 
 void keyPressed() {
@@ -61,6 +79,8 @@ void keyPressed() {
 void draw() {
   video.loadPixels();
   image(video, 0, 0);
+  
+  //No hace falta
   blobs.clear();
 
   // Begin loop to walk through every pixel
@@ -74,41 +94,63 @@ void draw() {
       float g1 = green(currentColor);
       float b1 = blue(currentColor);
       
-      float r2 = red(trackColor);
-      float g2 = green(trackColor);
-      float b2 = blue(trackColor);
-      
-      float d = distSq(r1, g1, b1, r2, g2, b2); 
+          // No haria falta
+          float r2 = red(trackColor);
+          float g2 = green(trackColor);
+          float b2 = blue(trackColor);
 
-      if (d < threshold*threshold) {
-        boolean found = false;
+          float d = distSq(r1, g1, b1, r2, g2, b2); 
 
-        for (Blob b : blobs) {
-          if (b.isNear(x, y)) {
-            b.add(x, y);
-            found = true;
-            break;
+          if (d < threshold*threshold) {
+            boolean found = false;
+
+            for (Blob b : blobs) {
+              if (b.isNear(x, y)) {
+                b.add(x, y);
+                found = true;
+                break;
+              }
+            }
+
+            if (!found) {
+              Blob b = new Blob(x, y);
+              blobs.add(b);
+            }
           }
-        }
-
-        if (!found) {
-          Blob b = new Blob(x, y);
-          blobs.add(b);
-        }
+          
+      // Añadido Angela y Lucia
+      if(color1 != 0 && trackColor == color1){
+        pintarPala1(x,y,r1, g1, b1);
+        trackColor = color2== 0? trackColor : color2;
+      }
+      
+      if(color2 != 0 && trackColor == color2){
+         pintarPala2(x, y, r1, g1, b1);
+         trackColor = color1;
       }
     }
   }
 
-  for (Blob b : blobs) {
-    if (b.size() > 500) {
-      b.show();
-    }
+      //No hace falta
+      for (Blob b : blobs) {
+        if (b.size() > 500) {
+          b.show();
+        }
+      }
+
+      pelota.pintar();
+      pelota.aplicarMovimiento();
+
+      imprimeMarcadores();
+      
+  //Añadido por Angela y Lucia
+  if(blob1 != null){
+      blob1.show();
   }
-
-  pelota.pintar();
-  pelota.aplicarMovimiento();
-
-  imprimeMarcadores();
+  if(blob2 != null){
+     blob2.show(); 
+  }
+  
 }
 
 void imprimeMarcadores(){
@@ -135,6 +177,28 @@ void imprimeMarcadores(){
   }
 }
 
+// Añadido por Angela y Lucia
+void pintarPala1(float x, float y, float r1, float g1, float b1){
+    float r2 = red(color1);
+    float g2 = green(color1);
+    float b2 = blue(color1);
+        
+    float d = distSq(r1, g1, b1, r2, g2, b2); 
+    if (d < threshold*threshold ) {
+      blob1 = color1 != 0? new Blob(x,y): blob1;
+    }
+}
+void pintarPala2(float x, float y, float r1, float g1, float b1){
+    float r2 = red(color2);
+    float g2 = green(color2);
+    float b2 = blue(color2);
+        
+    float d = distSq(r1, g1, b1, r2, g2, b2); 
+    if (d < threshold*threshold ) {
+      blob2 = color2 != 0? new Blob(x,y): blob2;
+    }
+}
+
 // Custom distance functions w/ no square root for optimization
 float distSq(float x1, float y1, float x2, float y2) {
   float d = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
@@ -147,7 +211,19 @@ float distSq(float x1, float y1, float z1, float x2, float y2, float z2) {
 }
 
 void mousePressed() {
-  // Save color where the mouse is clicked in trackColor variable
-  int loc = mouseX + mouseY*video.width;
-  trackColor = video.pixels[loc];
+  if (!paletasCreadas()){
+    int loc = mouseX + mouseY*video.width;
+    trackColor = video.pixels[loc];
+    color2 = color2 == 0 && color1 != 0? trackColor: color2;
+    color1 = color1 == 0? trackColor: color1;
+  }
+}
+
+// Añadido por Anegela y Lucia
+boolean paletasCreadas(){
+ if (blob1 != null && blob2 != null){
+  return true; 
+ } else {
+  return false; 
+ }
 }
