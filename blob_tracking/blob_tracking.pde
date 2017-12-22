@@ -4,13 +4,8 @@ Capture video;
 
 
 color trackColor; 
-
-float threshold = 25;
-
-float distThreshold = 50;
-
-// No hace falta
-ArrayList<Blob> blobs = new ArrayList<Blob>();
+float threshold = 15;
+float distThreshold = 10;
 
 // Añadido Angela y Lucia
 color color1 = 0;
@@ -29,21 +24,15 @@ boolean pause;
 Pelota pelota;
 
 void setup() {
-
   size(1280, 720);
   
   String[] cameras = Capture.list();
-  
   printArray(cameras);
-
   video = new Capture(this, 1280, 720);
-  
   video.start();
   
   // meter opacidad fondo.
-
   trackColor = color(255, 0, 0);
-
   marcadorIzq = 0;
   marcadorDer = 0;
   
@@ -80,45 +69,16 @@ void draw() {
   video.loadPixels();
   image(video, 0, 0);
   
-  //No hace falta
-  blobs.clear();
-
   // Begin loop to walk through every pixel
   for (int x = 0; x < video.width; x++ ) {
     for (int y = 0; y < video.height; y++ ) {
       int loc = x + y * video.width;
 
-      // What is current color
       color currentColor = video.pixels[loc];
       float r1 = red(currentColor);
       float g1 = green(currentColor);
       float b1 = blue(currentColor);
-      
-          // No haria falta
-          float r2 = red(trackColor);
-          float g2 = green(trackColor);
-          float b2 = blue(trackColor);
-
-          float d = distSq(r1, g1, b1, r2, g2, b2); 
-
-          if (d < threshold*threshold) {
-            boolean found = false;
-
-            for (Blob b : blobs) {
-              if (b.isNear(x, y)) {
-                b.add(x, y);
-                found = true;
-                break;
-              }
-            }
-
-            if (!found) {
-              Blob b = new Blob(x, y);
-              blobs.add(b);
-            }
-          }
           
-      // Añadido Angela y Lucia
       if(color1 != 0 && trackColor == color1){
         pintarPala1(x,y,r1, g1, b1);
         trackColor = color2== 0? trackColor : color2;
@@ -130,26 +90,18 @@ void draw() {
       }
     }
   }
-
-      //No hace falta
-      for (Blob b : blobs) {
-        if (b.size() > 500) {
-          b.show();
-        }
-      }
-
-      pelota.pintar();
-      pelota.aplicarMovimiento();
-
-      imprimeMarcadores();
-      
-  //Añadido por Angela y Lucia
+  
   if(blob1 != null){
       blob1.show();
   }
   if(blob2 != null){
      blob2.show(); 
   }
+  
+  pelota.pintar();
+  pelota.aplicarMovimiento();
+  
+  imprimeMarcadores();
   
 }
 
@@ -177,7 +129,6 @@ void imprimeMarcadores(){
   }
 }
 
-// Añadido por Angela y Lucia
 void pintarPala1(float x, float y, float r1, float g1, float b1){
     float r2 = red(color1);
     float g2 = green(color1);
@@ -219,7 +170,6 @@ void mousePressed() {
   }
 }
 
-// Añadido por Anegela y Lucia
 boolean paletasCreadas(){
  if (blob1 != null && blob2 != null){
   return true; 
