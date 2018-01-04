@@ -120,9 +120,8 @@ void draw() {
     }
     if(blob1 != null && blob2 != null){
       pelota.pintar();
+      pelota.aplicarMovimiento();
     }
-    pelota.aplicarMovimiento();
-    
     imprimeMarcadores();
     
   }
@@ -186,7 +185,7 @@ float distSq(float x1, float y1, float z1, float x2, float y2, float z2) {
 }
 
 void mousePressed() {
-  if (!paletasCreadas()){
+  if (!paletasCreadas() && juego){
     int loc = mouseX + mouseY*video.width;
     
     lado = blob1 == null ? ((mouseX < width/2.0) ? true : false) : lado;
