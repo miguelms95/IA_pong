@@ -119,7 +119,7 @@ void draw() {
        blob2.show(); 
     }
     if(blob1 != null && blob2 != null){
-      pelota.pintar(blob1, blob2);
+      pelota.pintar();
     }
     pelota.aplicarMovimiento();
     
