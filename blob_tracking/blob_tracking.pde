@@ -90,7 +90,21 @@ void draw() {
     video.loadPixels();
     image(video, 0, 0);
     
-    // Begin loop to walk through every pixel
+    escaneaPixeles();
+    pintaPalas();
+    
+    if(blob1 != null && blob2 != null){
+      pelota.pintar();
+      pelota.aplicarMovimiento();
+    }
+    imprimeMarcadores();
+    
+  }
+}
+
+/* Escanea colores de la pantalla y asigna la nueva posicion */
+void escaneaPixeles(){
+    // loop que escanea todos los pixeles
     for (int x = 0; x < video.width; x++ ) {
       for (int y = 0; y < video.height; y++ ) {
         int loc = x + y * video.width;
@@ -111,6 +125,10 @@ void draw() {
         }
       }
     }
+}
+
+// pinta las palas
+void pintaPalas(){    
     
     if(blob1 != null){
         blob1.show();
@@ -118,14 +136,8 @@ void draw() {
     if(blob2 != null){
        blob2.show(); 
     }
-    if(blob1 != null && blob2 != null){
-      pelota.pintar();
-      pelota.aplicarMovimiento();
-    }
-    imprimeMarcadores();
     
   }
-}
 
 void imprimeMarcadores(){
   textAlign(RIGHT);
