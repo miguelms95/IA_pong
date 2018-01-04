@@ -28,7 +28,7 @@ Pelota pelota;
 boolean juego = false;
 
 void setup() {
-  PFont fuente = loadFont("Square One.ttf");
+  PFont fuente = createFont("square  .ttf",20);
   textFont(fuente);
   
   size(640, 480);
