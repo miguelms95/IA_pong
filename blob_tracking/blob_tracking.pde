@@ -28,11 +28,14 @@ Pelota pelota;
 boolean juego = false;
 
 void setup() {
-  size(1280, 720);
+  PFont fuente = loadFont("Square One.ttf");
+  textFont(fuente);
+  
+  size(640, 480);
   
   String[] cameras = Capture.list();
   printArray(cameras);
-  video = new Capture(this, 1280, 720);
+  video = new Capture(this, 640, 480);
   video.start();
   
   // meter opacidad fondo.
@@ -66,10 +69,37 @@ void keyPressed() {
      juego = true;
   }
   
+  if ((key == 'p' || key == 'P')){
+     pause = (pause)?false:true;
+  }
+  
+  if ((key == 'r' || key == 'R') && (juego)){
+     reiniciarPartida();
+  }
+  
   println(distThreshold);
 }
 
+void reiniciarPartida(){
+     juego = false;
+     pause=false;
+     
+     //Reiniciar marcadores
+     marcadorIzq=0;
+     marcadorDer=0;
+     
+     //Reiniciar pelota
+     pelota=new Pelota(100,100);
+     
+     //Deasignar los colores seleccionados
+     color1 = 0;
+     blob1 = null;
+     asignada1 = false;
 
+     color2 = 0;
+     blob2 = null;
+     asignada2 = false;
+}
 
 void draw() {
   if (!juego){
