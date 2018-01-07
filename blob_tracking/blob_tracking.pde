@@ -32,13 +32,16 @@ boolean juego = false;
 void setup() {
   PFont fuente = createFont("square.ttf",20);
   textFont(fuente);
-  
-  size(640, 480);
-  
   String[] cameras = Capture.list();
   printArray(cameras);
-  video = new Capture(this, 640, 480);
+  println("camara mejor" + cameras[cameras.length-1]);
+  
+  //size(640, 480);
+  size(1280, 720);
+  
+  video = new Capture(this, 1280,720); // cameras[cameras.length-1] // con esta camara sale la de mejor resolucion
   video.start();
+  
   
   // meter opacidad fondo.
   
