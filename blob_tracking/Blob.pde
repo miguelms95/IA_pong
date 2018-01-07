@@ -1,8 +1,8 @@
 class Blob {
-  float minx;
-  float miny;
-  float maxx;
-  float maxy;
+  float x;
+  float y;
+  float ancho;
+  float alto;
 
   // Lado de la paleta. TRUE = derecha / FALSE = izquierda.
   boolean lado;
@@ -21,17 +21,17 @@ class Blob {
     
     // Si es de la derecha
     if (!lado && rl){
-      minx = width/2.0;
-      maxx = width/2.0+width*0.02;
+      x = width/2.0;
+      ancho = width/2.0+width*0.02;
     } else if (lado && lr){
-      maxx = width/2.0;
-      minx = width/2.0-width*0.02;
+      ancho = width/2.0;
+      this.x = width/2.0-width*0.02;
     } else {
-      minx = x-width*0.01; 
-      maxx = x+width*0.01;
+      this.x = x-width*0.01; 
+      ancho = x+width*0.01;
     }
-    miny = y-height*0.12;
-    maxy = y+height*0.12;
+    this.y = y-height*0.12;
+    alto = y+height*0.12;
   }
 
   void show() {
@@ -39,11 +39,11 @@ class Blob {
     fill(255);
     strokeWeight(2);
     rectMode(CORNERS);
-    rect(minx, miny, maxx, maxy);
+    rect(this.x, this.y, ancho, alto,20);
   }
    //<>// //<>//
   float size() {
-    return (maxx-minx)*(maxy-miny);
+    return (ancho-this.x)*(alto-this.y);
   }
   
 }

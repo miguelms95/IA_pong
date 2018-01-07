@@ -27,7 +27,7 @@ boolean pause;
 
 Pelota pelota;
 boolean juego = false;
-ArrayList<Blob> palas = new ArrayList<Blob>();
+//ArrayList<Blob> palas = new ArrayList<Blob>();//no las utilizo al final
 
 void setup() {
   PFont fuente = createFont("square.ttf",20);
@@ -133,8 +133,8 @@ void draw() {
     
   }
 }
-/*
-boolean colision(){
+
+boolean colision(Blob pala){
   if(!pelota.estaColisionando &&
      pelota.x <= (pala.x+(pala.ancho)) &&
      pelota.x >= (pala.x) && 
@@ -147,7 +147,7 @@ boolean colision(){
     pelota.estaColisionando = false;
     return false;
   }
-}*/
+}
 
 /* Escanea colores de la pantalla y asigna la nueva posicion */
 void escaneaPixeles(){
