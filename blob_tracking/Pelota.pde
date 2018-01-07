@@ -4,6 +4,7 @@ class Pelota{
   
   float vx = 2;
   float vy = 3;
+  boolean estaColisionando = false;
   
   public Pelota(int x, float y){
     this.x = x;

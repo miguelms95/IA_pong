@@ -7,15 +7,16 @@ color trackColor;
 float threshold = 15;
 float distThreshold = 10;
 
-// Añadido Angela y Lucia
+
 color color1 = 0;
 Blob blob1 = null;
 boolean asignada1 = false;
 
-// Añadido Angela y Lucia
+
 color color2 = 0;
 Blob blob2 = null;
 boolean asignada2 = false;
+
 
 // Lado de cada pala. TRUE = derecha / FALSE = izquierda.
 boolean lado;
@@ -26,6 +27,7 @@ boolean pause;
 
 Pelota pelota;
 boolean juego = false;
+ArrayList<Blob> palas = new ArrayList<Blob>();
 
 void setup() {
   PFont fuente = createFont("square.ttf",20);
@@ -131,6 +133,21 @@ void draw() {
     
   }
 }
+/*
+boolean colision(){
+  if(!pelota.estaColisionando &&
+     pelota.x <= (pala.x+(pala.ancho)) &&
+     pelota.x >= (pala.x) && 
+     pelota.y < pala.y+(pala.alto/2) && 
+     pelota.y > pala.y-(pala.alto/2)){
+    
+    pelota.estaColisionando = true;
+    return true;
+  }else{
+    pelota.estaColisionando = false;
+    return false;
+  }
+}*/
 
 /* Escanea colores de la pantalla y asigna la nueva posicion */
 void escaneaPixeles(){
@@ -158,7 +175,11 @@ void escaneaPixeles(){
 }
 
 // pinta las palas
-void pintaPalas(){    
+void pintaPalas(){
+  /*for(Blob b:palas){
+    if(b != null)
+      b.show();
+  }*/
     
     if(blob1 != null){
         blob1.show();
