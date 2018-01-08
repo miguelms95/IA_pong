@@ -142,14 +142,19 @@ void draw() {
 }
 
 boolean colision(Blob pala){
-  if(!pelota.estaColisionando &&
-     pelota.x <= (pala.x+(pala.ancho)) &&
-     pelota.x >= (pala.x) && 
-     pelota.y < pala.y+(pala.alto/2) && 
-     pelota.y > pala.y-(pala.alto/2)){
+  boolean rangoX = pelota.x+pelota.diametro/2-2 >= pala.x && pelota.x-pelota.diametro/2+2 <= pala.x+pala.ancho;
+  boolean rangoY = pelota.y+pelota.diametro/2-2 >= pala.y && pelota.y-pelota.diametro/2+2 <= pala.y+pala.alto;
+  
+  if(rangoX && rangoY){
     
-    pelota.estaColisionando = true;
-    return true;
+    if (!pelota.estaColisionando){
+      pelota.estaColisionando = true;
+      pelota.vx = pelota.vx*-1;
+      pelota.x = pelota.x + pelota.vx;
+      return true;
+    }
+    
+    return false;
   }else{
     pelota.estaColisionando = false;
     return false;
