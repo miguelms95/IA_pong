@@ -17,8 +17,16 @@ class Pelota{
   }
   
   void aplicarMovimiento(){
-    if(y >= height || y < 0)
+    if(y+diametro/2 >= height || y-diametro/2 < 0)
       vy *= -1;
+     if(x>width){
+       aumentarPuntos(1);
+       return;
+      }
+      if(x<0){
+       aumentarPuntos(2);
+       return;
+      }
     this.x += vx;
     this.y += vy;
   }

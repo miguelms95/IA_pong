@@ -29,17 +29,20 @@ Pelota pelota;
 boolean juego = false;
 //ArrayList<Blob> palas = new ArrayList<Blob>();//no las utilizo al final
 
+PFont fuente;
+PFont original;
+
 void setup() {
-  PFont fuente = createFont("square.ttf",20);
-  textFont(fuente);
+  fuente = createFont("square.ttf",40);
+  original = createFont("LSANS.TTF",12);
   String[] cameras = Capture.list();
   printArray(cameras);
   println("camara mejor" + cameras[cameras.length-1]);
   
-  //size(640, 480);
-  size(1280, 720);
+  size(640, 480);
+  //size(1280, 720);
   
-  video = new Capture(this, 1280,720); // cameras[cameras.length-1] // con esta camara sale la de mejor resolucion
+  video = new Capture(this, 640,480); // cameras[cameras.length-1] // con esta camara sale la de mejor resolucion
   video.start();
   
   
@@ -122,18 +125,19 @@ void draw() {
     text(j, width*0.06, height*0.6, width*0.9, height*0.5);
   }
   else {
-    video.loadPixels();
-    image(video, 0, 0);
+    if(!pause){
+      video.loadPixels();
+      image(video, 0, 0);
     
-    escaneaPixeles();
-    pintaPalas();
+      escaneaPixeles();
+      pintaPalas();
     
-    if(blob1 != null && blob2 != null){
-      pelota.pintar();
-      pelota.aplicarMovimiento();
+      if(blob1 != null && blob2 != null){
+        pelota.pintar();
+        pelota.aplicarMovimiento();
+      }
+      imprimeMarcadores();
     }
-    imprimeMarcadores();
-    
   }
 }
 
@@ -206,15 +210,10 @@ void imprimeMarcadores(){
   
   //Marcadores
   textAlign(CENTER);
-  textSize(width/15);
+  textFont(fuente);
   text(marcadorIzq,width/2-width/15, height/10);
   text(marcadorDer,width/2+width/15, height/10);
-  
-  //Simbolo de pausa
-  if(pause){
-    rect(25, 25, width/40, height/7);
-    rect(45+width/40, 25, width/40, height/7);
-  }
+  textFont(original);
 }
 
 void pintarPala1(float x, float y, float r1, float g1, float b1){
@@ -260,6 +259,12 @@ void mousePressed() {
     color2 = color2 == 0 && color1 != 0? trackColor: color2;
     color1 = color1 == 0? trackColor: color1;
   }
+}
+
+public void aumentarPuntos(int jugador){
+  marcadorIzq +=(jugador==1)?1:0;
+  marcadorDer +=(jugador==2)?1:0;
+  pelota=new Pelota(100,100);
 }
 
 boolean paletasCreadas(){
