@@ -41,7 +41,7 @@ class Blob {
     rectMode(CORNERS);
     rect(this.x, this.y, ancho, alto,20);
   }
-   //<>// //<>//
+   //<>// //<>// //<>//
   float size() {
     return (ancho-this.x)*(alto-this.y);
   }

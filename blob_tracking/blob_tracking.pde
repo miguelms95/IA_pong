@@ -1,7 +1,18 @@
+import ddf.minim.*; //<>//
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
 import processing.video.*;
 
 Capture video;
 
+Minim minim;
+FilePlayer filePlayer;
+AudioOutput musica;
+float volumen = 0;
 
 color trackColor; 
 float threshold = 15;
@@ -24,6 +35,10 @@ boolean lado;
 int marcadorIzq;
 int marcadorDer;
 boolean pause;
+
+boolean musicaOn = false;
+float volumenActual;
+int tiempoReaccion = 10;
 
 Pelota pelota;
 boolean juego = false;
@@ -54,7 +69,13 @@ void setup() {
   
   pause = false;  
   pelota = new Pelota(100,100);
+  
+  minim = new Minim(this);
+  filePlayer = new FilePlayer( minim.loadFileStream("musica.mp3") );
+  musica = minim.getLineOut();
+  filePlayer.patch(musica);
 }
+
 
 void captureEvent(Capture video) {
   video.read();
@@ -135,6 +156,7 @@ void draw() {
       if(blob1 != null && blob2 != null){
         pelota.pintar();
         pelota.aplicarMovimiento();
+        iniciarMusica();
       }
       imprimeMarcadores();
     }
@@ -201,6 +223,32 @@ void pintaPalas(){
     }
     
   }
+
+void iniciarMusica(){
+  if(!musicaOn){
+    filePlayer.loop();
+    musicaOn = true;
+    volumenActual = musica.mix.level();
+  }
+  else{
+    if(tiempoReaccion >= 15){
+      float variacion = musica.mix.level()*random(12, 13);
+      if (musica.mix.level() < volumenActual) {
+        this.pelota.vy = this.pelota.vy > 0 ? this.pelota.vy - variacion : this.pelota.vy + variacion;
+        this.pelota.vx = this.pelota.vx > 0 ? this.pelota.vx - variacion : this.pelota.vx + variacion;
+      } else {
+        this.pelota.vy = this.pelota.vy > 0 ? this.pelota.vy + variacion : this.pelota.vy - variacion;
+        this.pelota.vx = this.pelota.vx > 0 ? this.pelota.vx + variacion : this.pelota.vx - variacion;
+      }
+      tiempoReaccion = 0;
+      volumenActual = musica.mix.level();
+    } else {
+      tiempoReaccion ++;
+    }
+    println("El volumen es " + musica.mix.level());
+    println("Y la velocidad actual " + this.pelota.vy);
+  }
+}
 
 void imprimeMarcadores(){
   textAlign(RIGHT);

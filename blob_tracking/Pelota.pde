@@ -13,6 +13,7 @@ class Pelota{
   
   void pintar(){
     fill(120,220,120);
+    strokeWeight(1);
     ellipse(x,y,diametro,diametro);
   }
   
