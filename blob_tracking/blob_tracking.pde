@@ -164,13 +164,19 @@ void draw() {
 }
 
 boolean colision(Blob pala){
-  boolean rangoX = pelota.x+pelota.diametro/2-2 >= pala.x && pelota.x-pelota.diametro/2+2 <= pala.x+pala.ancho;
-  boolean rangoY = pelota.y+pelota.diametro/2-2 >= pala.y && pelota.y-pelota.diametro/2+2 <= pala.y+pala.alto;
+  boolean rangoXi = pelota.x+pelota.diametro/2 >= pala.x && pala.x - pelota.x+pelota.diametro/2-3 <= 2 && pelota.x < pala.x;
+  boolean rangoXd = pelota.x-pelota.diametro/2 <= pala.x+pala.ancho && (pelota.x-pelota.diametro/2+3) - (pala.x+pala.ancho) <= 2 && pelota.x > pala.x;
+  boolean rangoY = pelota.y+pelota.diametro/2 >= pala.y && pelota.y-pelota.diametro/2 <= pala.y+pala.alto;
   
-  if(rangoX && rangoY){
-    
+  if(rangoY && (rangoXi || rangoXd)){
+     
     if (!pelota.estaColisionando){
       pelota.estaColisionando = true;
+      if (rangoXi) {
+        pelota.x = pala.x+pala.ancho-pelota.diametro;
+      } else if (rangoXd) {
+        pelota.x = pala.x+pelota.diametro;
+      }
       pelota.vx = pelota.vx*-1;
       pelota.x = pelota.x + pelota.vx;
       return true;
@@ -217,9 +223,11 @@ void pintaPalas(){
     
     if(blob1 != null){
         blob1.show();
+        colision(blob1);
     }
     if(blob2 != null){
        blob2.show(); 
+       colision(blob2);
     }
     
   }

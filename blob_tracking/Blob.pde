@@ -21,7 +21,7 @@ class Blob {
     
     // Si es de la derecha
     if (!lado && rl){
-      x = width/2.0;
+      this.x = width/2.0;
       ancho = width/2.0+width*0.02;
     } else if (lado && lr){
       ancho = width/2.0;
