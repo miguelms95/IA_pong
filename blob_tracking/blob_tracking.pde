@@ -6,6 +6,7 @@ import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
 import processing.video.*;
+import java.util.Random;
 
 Capture video;
 
@@ -68,7 +69,7 @@ void setup() {
   marcadorDer = 0;
   
   pause = false;  
-  pelota = new Pelota(100,100);
+  pelota = new Pelota(width/2,100);
   
   minim = new Minim(this);
   filePlayer = new FilePlayer( minim.loadFileStream("musica.mp3") );
@@ -118,7 +119,8 @@ void reiniciarPartida(){
      marcadorDer=0;
      
      //Reiniciar pelota
-     pelota=new Pelota(100,100);
+     Random r = new Random();
+     pelota=new Pelota(width/2,r.nextInt(height));
      
      //Deasignar los colores seleccionados
      color1 = 0;
