@@ -43,7 +43,6 @@ int tiempoReaccion = 10;
 
 Pelota pelota;
 boolean juego = false;
-//ArrayList<Blob> palas = new ArrayList<Blob>();//no las utilizo al final
 
 PFont fuente;
 PFont original;
@@ -232,11 +231,6 @@ void escaneaPixeles(){
 
 // pinta las palas
 void pintaPalas(){
-  /*for(Blob b:palas){
-    if(b != null)
-      b.show();
-  }*/
-    
     if(blob1 != null){
         blob1.show();
         colision(blob1);
