@@ -69,7 +69,7 @@ void setup() {
   marcadorDer = 0;
   
   pause = false;  
-  pelota = new Pelota(width/2,100);
+  iniciarPelota();
   
   minim = new Minim(this);
   filePlayer = new FilePlayer( minim.loadFileStream("musica.mp3") );
@@ -119,8 +119,7 @@ void reiniciarPartida(){
      marcadorDer=0;
      
      //Reiniciar pelota
-     Random r = new Random();
-     pelota=new Pelota(width/2,r.nextInt(height));
+     iniciarPelota();
      
      //Deasignar los colores seleccionados
      color1 = 0;
@@ -132,6 +131,11 @@ void reiniciarPartida(){
      asignada2 = false;
 }
 
+void iniciarPelota(){
+  Random r = new Random();
+  pelota=new Pelota(width/2,r.nextInt(height));
+}
+
 void draw() {
   if (!juego){
     background(255);
@@ -141,11 +145,19 @@ void draw() {
     fill(255, 0, 0);
     text(p, width*0.04, height*0.1, width*0.9, height*0.5);
     
-    String j = "-Pulsa 'j' para jugar";
+    String j = "> Pulsa 'j' para jugar";
     textSize(width*0.06);
     textAlign(CENTER);
     fill(255, 0, 0);
     text(j, width*0.06, height*0.6, width*0.9, height*0.5);
+    
+    String k = "- Pulsa 'r' para reiniciar";
+
+    text(k, width*0.06, height*0.7, width*0.9, height*0.5);
+    
+    String l = "- Pulsa 'p' para pausar";
+
+    text(l, width*0.06, height*0.8, width*0.9, height*0.5);
   }
   else {
     if(!pause){
@@ -329,7 +341,7 @@ void mousePressed() {
 public void aumentarPuntos(int jugador){
   marcadorIzq +=(jugador==1)?1:0;
   marcadorDer +=(jugador==2)?1:0;
-  pelota=new Pelota(100,100);
+  iniciarPelota();
 }
 
 boolean paletasCreadas(){
