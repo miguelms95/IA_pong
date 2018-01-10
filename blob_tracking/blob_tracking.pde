@@ -19,7 +19,6 @@ color trackColor;
 float threshold = 15;
 float distThreshold = 10;
 
-
 color color1 = 0;
 Blob blob1 = null;
 boolean asignada1 = false;
@@ -35,17 +34,19 @@ boolean lado;
 
 int marcadorIzq;
 int marcadorDer;
-boolean pause;
 
 boolean musicaOn = false;
 float volumenActual;
 int tiempoReaccion = 10;
 
 Pelota pelota;
-boolean juego = false;
+
+int estado; //0 - nuevo juego     1 - pausa      2 - en partida       3 - victoria
 
 PFont fuente;
 PFont original;
+
+int puntosFinales = 10;
 
 void setup() {
   fuente = createFont("square.ttf",40);
@@ -67,7 +68,7 @@ void setup() {
   marcadorIzq = 0;
   marcadorDer = 0;
   
-  pause = false;  
+  estado = 0;
   iniciarPelota();
   
   minim = new Minim(this);
@@ -94,15 +95,15 @@ void keyPressed() {
     threshold-=5;
   }
   
-  if ((key == 'j' || key == 'J') && (!juego)){
-     juego = true;
+  if ((key == 'j' || key == 'J') && (estado == 0)){
+     estado = 2;
   }
   
   if ((key == 'p' || key == 'P')){
-     pause = (pause)?false:true;
+     estado = (estado==2)?1:estado;
   }
   
-  if ((key == 'r' || key == 'R') && (juego)){
+  if ((key == 'r' || key == 'R') && (estado!=0)){
      reiniciarPartida();
   }
   
@@ -110,8 +111,7 @@ void keyPressed() {
 }
 
 void reiniciarPartida(){
-     juego = false;
-     pause=false;
+     estado=0;
      
      //Reiniciar marcadores
      marcadorIzq=0;
@@ -128,6 +128,10 @@ void reiniciarPartida(){
      color2 = 0;
      blob2 = null;
      asignada2 = false;
+     
+     filePlayer.pause();
+     filePlayer.rewind();
+     musicaOn = false;
 }
 
 void iniciarPelota(){
@@ -136,43 +140,45 @@ void iniciarPelota(){
 }
 
 void draw() {
-  if (!juego){
+  switch(estado){
+    case 0: //Nuevo juego
     background(255);
-    String p = "PONG - INFORMÁTICA AUDIOVISUAL";
+    String p = "PONG - INFORMÁTICA AUDIOVISUAL\n> Pulsa 'j' para jugar\n- Pulsa 'r' para reiniciar\n- Pulsa 'p' para pausar\n- Pulsa 't' para seleccionar canción";
     textAlign(CENTER);
-    textSize(width*0.08);
+    textSize(width*0.07);
     fill(255, 0, 0);
-    text(p, width*0.04, height*0.1, width*0.9, height*0.5);
+    text(p, width*0.04, 10, width*0.9, height);
+    break;
     
-    String j = "> Pulsa 'j' para jugar";
-    textSize(width*0.06);
-    textAlign(CENTER);
-    fill(255, 0, 0);
-    text(j, width*0.06, height*0.6, width*0.9, height*0.5);
+    case 1://Pausa
+    //Cuando se esta en pausa no se hace nada hehe
+    break;
     
-    String k = "- Pulsa 'r' para reiniciar";
-
-    text(k, width*0.06, height*0.7, width*0.9, height*0.5);
+    case 2://En medio del fulgor de una partida
+    video.loadPixels();
+    image(video, 0, 0);
     
-    String l = "- Pulsa 'p' para pausar";
-
-    text(l, width*0.06, height*0.8, width*0.9, height*0.5);
-  }
-  else {
-    if(!pause){
-      video.loadPixels();
-      image(video, 0, 0);
+    escaneaPixeles();
+    pintaPalas();
     
-      escaneaPixeles();
-      pintaPalas();
-    
-      if(blob1 != null && blob2 != null){
-        pelota.pintar();
-        pelota.aplicarMovimiento();
-        iniciarMusica();
-      }
-      imprimeMarcadores();
+    if(blob1 != null && blob2 != null){
+      pelota.pintar();
+      pelota.aplicarMovimiento();
+      iniciarMusica();
     }
+    imprimeMarcadores();
+    break;
+    
+    case 3://Uno de los dos jugadores ha llevado al límite a su rival y se ha llevado la victoria
+    filePlayer.pause();
+    background(255);
+    int ganador = (marcadorIzq==puntosFinales)?1:2;
+    String victory = "¡Victoria!\nFelicidades Jugador "+ganador+"\nMarcador: "+marcadorIzq+" - "+marcadorDer+"\n-Pulsa 'r' para reiniciar la partida";
+    textAlign(CENTER);
+    fill(255, 0, 0);
+    textSize(30);
+    text(victory, width*0.06, 10, width*0.9, height*0.5);
+    break;
   }
 }
 
@@ -321,7 +327,7 @@ float distSq(float x1, float y1, float z1, float x2, float y2, float z2) {
 }
 
 void mousePressed() {
-  if (!paletasCreadas() && juego){
+  if (!paletasCreadas() && estado==2){
     int loc = mouseX + mouseY*video.width;
     
     lado = blob1 == null ? ((mouseX < width/2.0) ? true : false) : lado;
@@ -335,7 +341,10 @@ void mousePressed() {
 public void aumentarPuntos(int jugador){
   marcadorIzq +=(jugador==1)?1:0;
   marcadorDer +=(jugador==2)?1:0;
-  iniciarPelota();
+  if(marcadorIzq == puntosFinales || marcadorDer == puntosFinales)
+    estado=3;
+  else
+    iniciarPelota();
 }
 
 boolean paletasCreadas(){
