@@ -2,8 +2,8 @@ class Pelota{
   float x, y;
   float diametro =  40;
   
-  float vx = 2;
-  float vy = 3;
+  float vx = 20;
+  float vy = 10;
   boolean estaColisionando = false;
   
   public Pelota(int x, float y){
