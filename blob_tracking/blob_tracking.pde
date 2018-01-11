@@ -61,10 +61,7 @@ void setup() {
   
   video = new Capture(this, 1920,1080);
   video.start();
-  
-  
-  // meter opacidad fondo.
-  
+    
   //trackColor = color(255, 0, 0);
   marcadorIzq = 0;
   marcadorDer = 0;
