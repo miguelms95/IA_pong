@@ -73,7 +73,7 @@ void setup() {
   iniciarPelota();
   
   minim = new Minim(this);
-  filePlayer = new FilePlayer( minim.loadFileStream("cancion0.mp3") );
+  filePlayer = new FilePlayer( minim.loadFileStream("cancion.mp3") );
   musica = minim.getLineOut();
   filePlayer.patch(musica);
 }
