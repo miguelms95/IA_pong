@@ -196,7 +196,7 @@ void draw() {
     String victory = "¡Victoria!\nFelicidades Jugador "+ganador+"\nMarcador: "+marcadorIzq+" - "+marcadorDer+"\n-Pulsa 'r' para reiniciar la partida";
     textAlign(CENTER);
     fill(255, 0, 0);
-    textSize(30);
+    textSize(40);
     text(victory, width*0.06, 10, width*0.9, height*0.5);
     break;
   }
