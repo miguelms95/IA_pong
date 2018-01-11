@@ -1,4 +1,4 @@
-import ddf.minim.*; //<>//
+import ddf.minim.*; //<>// //<>//
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 import ddf.minim.signals.*;
@@ -14,6 +14,7 @@ Minim minim;
 FilePlayer filePlayer;
 AudioOutput musica;
 float volumen = 0;
+String pathCancion = "cancion.mp3";
 
 color trackColor; 
 float threshold = 15;
@@ -73,7 +74,7 @@ void setup() {
   iniciarPelota();
   
   minim = new Minim(this);
-  filePlayer = new FilePlayer( minim.loadFileStream("cancion.mp3") );
+  filePlayer = new FilePlayer( minim.loadFileStream(pathCancion));
   musica = minim.getLineOut();
   filePlayer.patch(musica);
 }
@@ -108,7 +109,25 @@ void keyPressed() {
      reiniciarPartida();
   }
   
+  if ((key == 'm' || key == 'M')){
+     selectInput("Selecciona cancion","cancionSeleccionada");
+  }
+  
   println(distThreshold);
+}
+
+void cancionSeleccionada(File selection){
+  if (selection == null) {
+    println("No se ha seleccionado nada");
+  } else {
+    pathCancion = selection.getAbsolutePath();
+    println("Canción seleccionada: " + pathCancion);
+    
+    filePlayer.pause();
+    filePlayer = new FilePlayer( minim.loadFileStream(pathCancion));
+    musica = minim.getLineOut();
+    filePlayer.patch(musica);
+  }
 }
 
 void reiniciarPartida(){
@@ -144,9 +163,9 @@ void draw() {
   switch(estado){
     case 0: //Nuevo juego
     background(255);
-    String p = "PONG - INFORMÁTICA AUDIOVISUAL\n> Pulsa 'j' para jugar\n- Pulsa 'r' para reiniciar\n- Pulsa 'p' para pausar\n- Pulsa 't' para seleccionar canción";
+    String p = "PONG - INFORMÁTICA AUDIOVISUAL\n> Pulsa 'j' para jugar\n- Pulsa 'r' para reiniciar\n- Pulsa 'p' para pausar\n- Pulsa 'm' para seleccionar canción";
     textAlign(CENTER);
-    textSize(width*0.07);
+    textSize(width*0.05);
     fill(255, 0, 0);
     text(p, width*0.04, 10, width*0.9, height);
     break;
