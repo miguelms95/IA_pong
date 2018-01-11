@@ -1,4 +1,4 @@
-import ddf.minim.*; //<>// //<>//
+import ddf.minim.*;  //<>//
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 import ddf.minim.signals.*;
@@ -18,7 +18,6 @@ String pathCancion = "cancion.mp3";
 
 color trackColor; 
 float threshold = 15;
-float distThreshold = 10;
 
 color color1 = 0;
 Blob blob1 = null;
@@ -85,11 +84,6 @@ void captureEvent(Capture video) {
 }
 
 void keyPressed() {
-  if (key == 'a' || key == 'A') { // aumenta distancia del umbral 
-    distThreshold += 5;
-  } else if (key == 'z' || key == 'Z') { // disminuye distancia del umbral 
-    distThreshold -= 5;  
-  }
 
   if (key == 's' || key == 'S') { // aumenta umbral
     threshold+=5;
@@ -102,7 +96,7 @@ void keyPressed() {
   }
   
   if ((key == 'p' || key == 'P')){
-     estado = (estado==2)?1:estado;
+     estado = (estado==2)?2:1;
   }
   
   if ((key == 'r' || key == 'R') && (estado!=0)){
@@ -112,8 +106,7 @@ void keyPressed() {
   if ((key == 'm' || key == 'M')){
      selectInput("Selecciona cancion","cancionSeleccionada");
   }
-  
-  println(distThreshold);
+ 
 }
 
 void cancionSeleccionada(File selection){
@@ -129,6 +122,7 @@ void cancionSeleccionada(File selection){
     filePlayer.patch(musica);
   }
 }
+
 
 void reiniciarPartida(){
      estado=0;
@@ -298,7 +292,6 @@ void imprimeMarcadores(){
   textAlign(RIGHT);
   fill(0);
   textSize(16);
-  text("distance threshold: " + distThreshold, width-10, 25);
   text("color threshold: " + threshold, width-10, 50);
   
   //Linea central
@@ -335,11 +328,6 @@ void pintarPala2(float x, float y, float r1, float g1, float b1){
     }
 }
 
-// Custom distance functions w/ no square root for optimization
-float distSq(float x1, float y1, float x2, float y2) {
-  float d = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-  return d;
-}
 
 float distSq(float x1, float y1, float z1, float x2, float y2, float z2) {
   float d = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) +(z2-z1)*(z2-z1);
