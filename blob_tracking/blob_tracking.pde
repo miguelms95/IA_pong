@@ -55,10 +55,11 @@ void setup() {
   printArray(cameras);
   println("camara mejor" + cameras[cameras.length-1]);
   
-  size(640, 480);
-  //size(1280, 720);
+  //size(640, 480);
+  size(1920, 1080);
   
-  video = new Capture(this, 640,480); // cameras[cameras.length-1] // con esta camara sale la de mejor resolucion
+  
+  video = new Capture(this, 1920,1080);
   video.start();
   
   
@@ -72,7 +73,7 @@ void setup() {
   iniciarPelota();
   
   minim = new Minim(this);
-  filePlayer = new FilePlayer( minim.loadFileStream("musica.mp3") );
+  filePlayer = new FilePlayer( minim.loadFileStream("cancion0.mp3") );
   musica = minim.getLineOut();
   filePlayer.patch(musica);
 }
